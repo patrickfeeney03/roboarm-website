@@ -35,13 +35,12 @@
                 if (slider) {    
                     var newValue = parseInt(slider.value) + delta;
                     console.log("newValue:" + newValue);
-                    console.log("prevValue: " + slider.dataset.prevValue);   
-                    if (newValue != slider.dataset.prevValue) {
-                        slider.value = newValue;
-                        socket.send(key + ":" + slider.value);
+                    console.log("prevValue: " + slider.dataset.prevValue); 
+                    slider.value = newValue;                    
+                    if (slider.value != slider.dataset.prevValue) {
                         slider.dataset.prevValue = slider.value;
-                        
-                    }                    
+                        socket.send(key + ":" + slider.value);
+                    }        
                 }
             }
 
@@ -56,10 +55,34 @@
                         updateSlider('S', -1);
                         break;
                     case 'A':
-                        updateSlider('E', -1);
+                        updateSlider('B', -1);
                         break;
                     case 'D':
+                        updateSlider('B', 1);
+                        break;
+                    case 'Q':
+                        updateSlider('R', 1);
+                        break;
+                    case 'E':
+                        updateSlider('R', -1);
+                        break;
+                    case 'U':
+                        updateSlider('G', 1);
+                        break;
+                    case 'H':
+                        updateSlider('G', -1);
+                        break;
+                    case 'I':
                         updateSlider('E', 1);
+                        break;
+                    case 'J':
+                        updateSlider('E', -1);
+                        break;
+                    case 'O':
+                        updateSlider('V', 1);
+                        break;
+                    case 'K':
+                        updateSlider('V', -1);
                         break;
                 }
             });
