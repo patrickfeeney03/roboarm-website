@@ -10,20 +10,59 @@
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const socket = new WebSocket("ws://" + location.hostname + ":81/ws");
-
+            const socket = new WebSocket("ws://" + location.hostname + ":81/");
             socket.onopen = function (event) {
                 console.log("WebSocket connection opened:", event);
             };
-
             socket.onclose = function (event) {
                 console.log("WebSocket connection closed:", event);
             };
-
             socket.onerror = function (event) {
                 console.error("WebSocket error:", event);
             };
 
+            var sliders = document.querySelectorAll("input[type=range]");
+            sliders.forEach(function (slider) {
+                slider.addEventListener("input", function () {
+                    var key = slider.getAttribute("data-key");
+                    var value = slider.value;
+                    socket.send(key + ":" + value);
+                });
+            });
+
+            function updateSlider(key, delta) {
+                var slider = document.querySelector("input[data-key=" + key + "]");
+                if (slider) {    
+                    var newValue = parseInt(slider.value) + delta;
+                    console.log("newValue:" + newValue);
+                    console.log("prevValue: " + slider.dataset.prevValue);   
+                    if (newValue != slider.dataset.prevValue) {
+                        slider.value = newValue;
+                        socket.send(key + ":" + slider.value);
+                        slider.dataset.prevValue = slider.value;
+                        
+                    }                    
+                }
+            }
+
+            document.addEventListener("keydown", function (event) {
+                var key = event.key.toUpperCase();
+
+                switch (key) {
+                    case 'W':
+                        updateSlider('S', 1);
+                        break;
+                    case 'S':
+                        updateSlider('S', -1);
+                        break;
+                    case 'A':
+                        updateSlider('E', -1);
+                        break;
+                    case 'D':
+                        updateSlider('E', 1);
+                        break;
+                }
+            });
         });
     </script>
 </head>
