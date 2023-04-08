@@ -35,7 +35,9 @@
 
             document.addEventListener("keydown", function (event) {
                 const key = event.key.toUpperCase();
-                if (!keyState[key]) {
+                if (key === "SHIFT") {
+                    keyState[key] = true;
+                } else if (!keyState[key]) {
                     keyState[key] = true;
                     if (!animationRunning) {
                         animationRunning = true;
@@ -89,7 +91,8 @@
                         if (keyState[key]) {
                             const mapping = keyToSliderMapping[key];
                             if (mapping) {
-                                updateSlider(mapping.key, mapping.delta);
+                                const delta = keyState["SHIFT"] ? mapping.delta * 3 : mapping.delta;
+                                updateSlider(mapping.key, delta);
                             }
                             
                         }
