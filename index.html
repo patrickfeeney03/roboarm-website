@@ -88,7 +88,10 @@
                     for (const key in keyState) {
                         if (keyState[key]) {
                             const mapping = keyToSliderMapping[key];
-                            updateSlider(mapping.key, mapping.delta);
+                            if (mapping) {
+                                updateSlider(mapping.key, mapping.delta);
+                            }
+                            
                         }
                     }
                 }
