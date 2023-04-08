@@ -66,29 +66,33 @@
 
             function updateSlider(key, delta) {
                 var slider = document.querySelector("input[data-key=" + key + "]");
-                if (slider) {    
+                if (slider) {
                     var newValue = parseInt(slider.value) + delta;
                     console.log("newValue:" + newValue);
-                    console.log("prevValue: " + slider.dataset.prevValue); 
+                    console.log("prevValue: " + slider.dataset.prevValue);
                     slider.value = newValue;
-                    console.log("value: " + slider.value);                    
+                    console.log("value: " + slider.value);
                     if (slider.value != slider.dataset.prevValue) {
                         slider.dataset.prevValue = slider.value;
                         socket.send(key + ":" + slider.value);
-                    }        
+                    }
                 }
             }
 
-            function updateSliders() {
-                let anyKeyPressed = false;
-                for (const key in keyState) {
-                    if (keyState[key]) {
-                        anyKeyPressed = true;
-                        const mapping = keyToSliderMapping[key];
-                        updateSlider(mapping.key, mapping.delta);
+            let lastUpdate = 0;
+            const updateInterval = 1000 / 30; // 30 fps
+
+            function updateSliders(timestamp) {
+                if (timestamp - lastUpdate > updateInterval) {
+                    lastUpdate = timestamp;
+                    for (const key in keyState) {
+                        if (keyState[key]) {
+                            const mapping = keyToSliderMapping[key];
+                            updateSlider(mapping.key, mapping.delta);
+                        }
                     }
                 }
-                if (anyKeyPressed) {
+                if (Object.values(keyState).some(Boolean)) {
                     requestAnimationFrame(updateSliders);
                 } else {
                     animationRunning = false;
