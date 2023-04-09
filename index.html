@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Keypress Detection</title>
     <style>
@@ -21,17 +22,22 @@
             };
 
             var sliders = document.querySelectorAll("input[type=range]");
-            let lastSliderUodate = 0;
+            const updateInterval = 1000 / 30; // 30 fps
+            let lastSliderUpdate = 0;
             sliders.forEach(function (slider) {
                 slider.addEventListener("input", function () {
-                    var key = slider.getAttribute("data-key");
-                    var value = slider.value;
-                    socket.send(key + ":" + value);
+                    const timeNow = performance.now();
+                    if (timeNow - lastSliderUpdate >= updateInterval) {
+                        console.log(timeNow - lastSliderUpdate);
+                        var key = slider.getAttribute("data-key");
+                        var value = slider.value;
+                        socket.send(key + ":" + value);
+                        lastSliderUpdate = timeNow;
+                    }                    
                 });
             });
 
             const keyState = {};
-            const updateInterval = 1000 / 30; // 30 fps
             let animationRunning = false;
 
             document.addEventListener("keydown", function (event) {
@@ -94,7 +100,7 @@
                                 const delta = keyState["SHIFT"] ? mapping.delta * 3 : mapping.delta;
                                 updateSlider(mapping.key, delta);
                             }
-                            
+
                         }
                     }
                 }
@@ -137,4 +143,5 @@
         <input type="range" min="10" max="73" value="50" step="1" data-key="G">
     </div>
 </body>
+
 </html>
