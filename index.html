@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Keypress Detection</title>
     <style>
@@ -70,8 +69,8 @@
                 var slider = document.querySelector("input[data-key=" + key + "]");
                 if (slider) {
                     var newValue = parseInt(slider.value) + delta;
-                    console.log("newValue:" + newValue);
-                    console.log("prevValue: " + slider.dataset.prevValue);
+                    //console.log("newValue:" + newValue);
+                    //console.log("prevValue: " + slider.dataset.prevValue);
                     slider.value = newValue;
                     console.log("value: " + slider.value);
                     if (slider.value != slider.dataset.prevValue) {
@@ -137,5 +136,4 @@
         <input type="range" min="10" max="73" value="50" step="1" data-key="G">
     </div>
 </body>
-
 </html>
