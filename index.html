@@ -21,6 +21,7 @@
             };
 
             var sliders = document.querySelectorAll("input[type=range]");
+            let lastSliderUodate = 0;
             sliders.forEach(function (slider) {
                 slider.addEventListener("input", function () {
                     var key = slider.getAttribute("data-key");
@@ -30,6 +31,7 @@
             });
 
             const keyState = {};
+            const updateInterval = 1000 / 30; // 30 fps
             let animationRunning = false;
 
             document.addEventListener("keydown", function (event) {
@@ -80,12 +82,11 @@
                 }
             }
 
-            let lastUpdate = 0;
-            const updateInterval = 1000 / 30; // 30 fps
+            let lastKeyUpdate = 0;
 
             function updateSliders(timestamp) {
-                if (timestamp - lastUpdate > updateInterval) {
-                    lastUpdate = timestamp;
+                if (timestamp - lastKeyUpdate > updateInterval) {
+                    lastKeyUpdate = timestamp;
                     for (const key in keyState) {
                         if (keyState[key]) {
                             const mapping = keyToSliderMapping[key];
