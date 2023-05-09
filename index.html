@@ -10,7 +10,7 @@
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const socket = new WebSocket("ws://" + location.hostname + ":81/");
+            const socket = new WebSocket("ws://" + location.hostname + ":80/ws");
             socket.onopen = function (event) {
                 console.log("WebSocket connection opened:", event);
             };
@@ -22,18 +22,15 @@
             };
 
             var sliders = document.querySelectorAll("input[type=range]");
-            const updateInterval = 1000 / 30; // 30 fps
             let lastSliderUpdate = 0;
             sliders.forEach(function (slider) {
                 slider.addEventListener("input", function () {
                     const timeNow = performance.now();
-                    if (timeNow - lastSliderUpdate >= updateInterval) {
-                        console.log(timeNow - lastSliderUpdate);
-                        var key = slider.getAttribute("data-key");
-                        var value = slider.value;
-                        socket.send(key + ":" + value);
-                        lastSliderUpdate = timeNow;
-                    }                    
+                    console.log(timeNow - lastSliderUpdate);
+                    var key = slider.getAttribute("data-key");
+                    var value = slider.value;
+                    socket.send(key + ":" + value);
+                    lastSliderUpdate = timeNow;
                 });
             });
 
@@ -58,6 +55,7 @@
                 keyState[key] = false;
             });
 
+            /*
             const keyToSliderMapping = {
                 'W': { key: 'S', delta: 1 },
                 'S': { key: 'S', delta: -1 },
@@ -71,6 +69,21 @@
                 'J': { key: 'E', delta: -1 },
                 'O': { key: 'V', delta: 1 },
                 'K': { key: 'V', delta: -1 },
+            };
+            */
+            const keyToSliderMapping = {
+                'W': { key: 'S', delta: 3 },
+                'S': { key: 'S', delta: -3 },
+                'A': { key: 'B', delta: -3 },
+                'D': { key: 'B', delta: 3 },
+                'Q': { key: 'R', delta: 3 },
+                'E': { key: 'R', delta: -3 },
+                'U': { key: 'G', delta: 3 },
+                'H': { key: 'G', delta: -3 },
+                'I': { key: 'E', delta: 3 },
+                'J': { key: 'E', delta: -3 },
+                'O': { key: 'V', delta: 3 },
+                'K': { key: 'V', delta: -3 },
             };
 
             function updateSlider(key, delta) {
@@ -91,17 +104,15 @@
             let lastKeyUpdate = 0;
 
             function updateSliders(timestamp) {
-                if (timestamp - lastKeyUpdate > updateInterval) {
-                    lastKeyUpdate = timestamp;
-                    for (const key in keyState) {
-                        if (keyState[key]) {
-                            const mapping = keyToSliderMapping[key];
-                            if (mapping) {
-                                const delta = keyState["SHIFT"] ? mapping.delta * 3 : mapping.delta;
-                                updateSlider(mapping.key, delta);
-                            }
-
+                lastKeyUpdate = timestamp;
+                for (const key in keyState) {
+                    if (keyState[key]) {
+                        const mapping = keyToSliderMapping[key];
+                        if (mapping) {
+                            const delta = keyState["SHIFT"] ? mapping.delta * 2 : mapping.delta;
+                            updateSlider(mapping.key, delta);
                         }
+
                     }
                 }
                 if (Object.values(keyState).some(Boolean)) {
