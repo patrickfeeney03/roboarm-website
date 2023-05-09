@@ -109,7 +109,7 @@
                     if (keyState[key]) {
                         const mapping = keyToSliderMapping[key];
                         if (mapping) {
-                            const delta = keyState["SHIFT"] ? mapping.delta * 3 : mapping.delta;
+                            const delta = keyState["SHIFT"] ? mapping.delta * 2 : mapping.delta;
                             updateSlider(mapping.key, delta);
                         }
 
