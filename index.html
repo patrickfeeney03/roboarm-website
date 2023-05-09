@@ -22,18 +22,15 @@
             };
 
             var sliders = document.querySelectorAll("input[type=range]");
-            const updateInterval = 1000 / 10; // 30 fps
             let lastSliderUpdate = 0;
             sliders.forEach(function (slider) {
                 slider.addEventListener("input", function () {
                     const timeNow = performance.now();
-                    if (timeNow - lastSliderUpdate >= updateInterval) {
-                        console.log(timeNow - lastSliderUpdate);
-                        var key = slider.getAttribute("data-key");
-                        var value = slider.value;
-                        socket.send(key + ":" + value);
-                        lastSliderUpdate = timeNow;
-                    }                    
+                    console.log(timeNow - lastSliderUpdate);
+                    var key = slider.getAttribute("data-key");
+                    var value = slider.value;
+                    socket.send(key + ":" + value);
+                    lastSliderUpdate = timeNow;
                 });
             });
 
@@ -107,17 +104,15 @@
             let lastKeyUpdate = 0;
 
             function updateSliders(timestamp) {
-                if (timestamp - lastKeyUpdate > updateInterval) {
-                    lastKeyUpdate = timestamp;
-                    for (const key in keyState) {
-                        if (keyState[key]) {
-                            const mapping = keyToSliderMapping[key];
-                            if (mapping) {
-                                const delta = keyState["SHIFT"] ? mapping.delta * 3 : mapping.delta;
-                                updateSlider(mapping.key, delta);
-                            }
-
+                lastKeyUpdate = timestamp;
+                for (const key in keyState) {
+                    if (keyState[key]) {
+                        const mapping = keyToSliderMapping[key];
+                        if (mapping) {
+                            const delta = keyState["SHIFT"] ? mapping.delta * 3 : mapping.delta;
+                            updateSlider(mapping.key, delta);
                         }
+
                     }
                 }
                 if (Object.values(keyState).some(Boolean)) {
