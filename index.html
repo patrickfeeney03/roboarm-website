@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Keypress Detection</title>
     <style>
@@ -75,8 +74,6 @@
                 var slider = document.querySelector("input[data-key=" + key + "]");
                 if (slider) {
                     var newValue = parseInt(slider.value) + delta;
-                    //console.log("newValue:" + newValue);
-                    //console.log("prevValue: " + slider.dataset.prevValue);
                     slider.value = newValue;
                     console.log("value: " + slider.value);
                     if (slider.value != slider.dataset.prevValue) {
@@ -97,7 +94,6 @@
                             const delta = keyState["SHIFT"] ? mapping.delta * 2 : mapping.delta;
                             updateSlider(mapping.key, delta);
                         }
-
                     }
                 }
                 if (Object.values(keyState).some(Boolean)) {
@@ -109,7 +105,6 @@
         });
     </script>
 </head>
-
 <body>
     <h1>Keypress Detection</h1>
     <p>Press the specified keys: W, S, A, D, Q, E, J, I, K, O, U, or H.</p>
@@ -139,5 +134,4 @@
         <input type="range" min="10" max="73" value="50" step="1" data-key="G">
     </div>
 </body>
-
 </html>
