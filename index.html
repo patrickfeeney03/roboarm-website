@@ -55,7 +55,6 @@
                 keyState[key] = false;
             });
 
-            /*
             const keyToSliderMapping = {
                 'W': { key: 'S', delta: 1 },
                 'S': { key: 'S', delta: -1 },
@@ -70,21 +69,7 @@
                 'O': { key: 'V', delta: 1 },
                 'K': { key: 'V', delta: -1 },
             };
-            */
-            const keyToSliderMapping = {
-                'W': { key: 'S', delta: 3 },
-                'S': { key: 'S', delta: -3 },
-                'A': { key: 'B', delta: -3 },
-                'D': { key: 'B', delta: 3 },
-                'Q': { key: 'R', delta: 3 },
-                'E': { key: 'R', delta: -3 },
-                'U': { key: 'G', delta: 3 },
-                'H': { key: 'G', delta: -3 },
-                'I': { key: 'E', delta: 3 },
-                'J': { key: 'E', delta: -3 },
-                'O': { key: 'V', delta: 3 },
-                'K': { key: 'V', delta: -3 },
-            };
+            
 
             function updateSlider(key, delta) {
                 var slider = document.querySelector("input[data-key=" + key + "]");
