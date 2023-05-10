@@ -71,15 +71,11 @@
             };
 
             var sliders = document.querySelectorAll("input[type=range]");
-            let lastSliderUpdate = 0;
             sliders.forEach(function (slider) {
                 slider.addEventListener("input", function () {
-                    const timeNow = performance.now();
-                    console.log(timeNow - lastSliderUpdate);
                     var key = slider.getAttribute("data-key");
                     var value = slider.value;
                     socket.send(key + ":" + value);
-                    lastSliderUpdate = timeNow;
                 });
             });
 
@@ -133,10 +129,7 @@
                 }
             }
 
-            let lastKeyUpdate = 0;
-
-            function updateSliders(timestamp) {
-                lastKeyUpdate = timestamp;
+            function updateSliders() {
                 for (const key in keyState) {
                     if (keyState[key]) {
                         const mapping = keyToSliderMapping[key];
