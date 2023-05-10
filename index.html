@@ -131,9 +131,9 @@
 
             function updateSliders() {
                 for (const key in keyState) {
-                    if (keyState[key]) {
+                    if (keyState[key]) { // If the value of the key is true...
                         const mapping = keyToSliderMapping[key];
-                        if (mapping) {
+                        if (mapping) { // If the key is part of the keyToSliderMapping...
                             const delta = keyState["SHIFT"] ? mapping.delta * 2 : mapping.delta;
                             updateSlider(mapping.key, delta);
                         }
